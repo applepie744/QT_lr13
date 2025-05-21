@@ -4,28 +4,46 @@ import Sailfish.Silica 1.0
 Page {
     id: page
 
-    property bool buttonPressed: false
+    property string value1: ""
+    property string value2: ""
+    property string result: ""
 
     Column {
         width: parent.width
         spacing: Theme.paddingLarge
         anchors.centerIn: parent
 
-        Label {
-            id: statusLabel
-            text: buttonPressed ? "Кнопка нажата" : "Кнопка не нажата"
+        Button {
+            text: "Открыть диалог"
             anchors.horizontalCenter: parent.horizontalCenter
-            color: Theme.highlightColor
+            onClicked: {
+                var dialog = pageStack.push("SumDialog.qml")
+                dialog.accepted.connect(function() {
+                    value1 = dialog.value1
+                    value2 = dialog.value2
+                    result = dialog.result
+                })
+            }
         }
 
-        Button {
-            id: controlButton
-            text: "Нажми меня"
+        Label {
+            text: "Первое число: " + value1
+            visible: value1 !== ""
             anchors.horizontalCenter: parent.horizontalCenter
+        }
 
-            onPressedChanged: {
-                buttonPressed = pressed
-            }
+        Label {
+            text: "Второе число: " + value2
+            visible: value2 !== ""
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+
+        Label {
+            text: "Сумма: " + result
+            visible: result !== ""
+            anchors.horizontalCenter: parent.horizontalCenter
+            color: Theme.highlightColor
+            font.bold: true
         }
     }
 }

@@ -11,6 +11,7 @@ SOURCES += \
 HEADERS += \
 
 DISTFILES += \
+    qml/pages/SumDialog.qml \
     rpm/ru.template.lr13_1.spec \
 
 AURORAAPP_ICONS = 86x86 108x108 128x128 172x172
