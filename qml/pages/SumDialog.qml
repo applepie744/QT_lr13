@@ -8,9 +8,15 @@ Dialog {
     property string value2: ""
     property string result: ""
 
+    property bool field1Error: false
+    property bool field2Error: false
+
+    canAccept: !field1Error && !field2Error &&
+               field1.text !== "" && field2.text !== ""
+
     Column {
         width: parent.width
-        spacing: Theme.paddingLarge
+        spacing: Theme.paddingMedium
 
         DialogHeader {
             title: "Сумма чисел"
@@ -22,6 +28,20 @@ Dialog {
             width: parent.width
             placeholderText: "Введите первое число"
             inputMethodHints: Qt.ImhFormattedNumbersOnly
+            color: field1Error ? Theme.errorColor : Theme.primaryColor
+
+            onTextChanged: validateInput(field1, 1)
+        }
+
+        Label {
+            text: "Введите число"
+            color: Theme.errorColor
+            font.pixelSize: Theme.fontSizeExtraSmall
+            visible: field1Error
+            anchors{
+                left: parent.left
+                leftMargin: Theme.horizontalPageMargin
+           }
         }
 
         TextField {
@@ -29,14 +49,39 @@ Dialog {
             width: parent.width
             placeholderText: "Введите второе число"
             inputMethodHints: Qt.ImhFormattedNumbersOnly
+            color: field2Error ? Theme.errorColor : Theme.primaryColor
+
+            onTextChanged: validateInput(field2, 2)
+        }
+
+        Label {
+            text: "Введите число"
+            color: Theme.errorColor
+            font.pixelSize: Theme.fontSizeExtraSmall
+            visible: field2Error
+            anchors{
+                left: parent.left
+                leftMargin: Theme.horizontalPageMargin
+           }
         }
     }
 
     onAccepted: {
         value1 = field1.text
         value2 = field2.text
-        var num1 = parseFloat(value1) || 0
-        var num2 = parseFloat(value2) || 0
+        var num1 = parseFloat(value1)
+        var num2 = parseFloat(value2)
         result = (num1 + num2).toString()
+    }
+
+    function validateInput(field, fieldNumber) {
+        var text = field.text
+        var isValid = text !== "" && !isNaN(text)
+
+        if (fieldNumber === 1) {
+            field1Error = !isValid
+        } else {
+            field2Error = !isValid
+        }
     }
 }
