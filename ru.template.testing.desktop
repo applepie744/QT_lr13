@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+X-Nemo-Application-Type=silica-qt5
+Icon=ru.template.testing
+Exec=/usr/bin/ru.template.testing
+Name=Template
+Name[ru]=Шаблон
+
+[X-Application]
+Permissions=Audio
+OrganizationName=ru.template
+ApplicationName=testing
+ExecDBus=/usr/bin/ru.template.testing
