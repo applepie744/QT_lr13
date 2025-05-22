@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import QtMultimedia 5.0
+import QtMultimedia 5.6
 
 Page {
     id: page
@@ -15,13 +15,23 @@ Page {
 
     Audio {
         id: buttonSound
-        source: "file:///C:/AuroraProject/testing/qml/sounds/click.wav"
+        property bool wasPlayed: false
+        source: "qrc:/sounds/click.wav"
         volume: 1.0
-        onStatusChanged: {
-            if (status === Audio.Ready) console.log("Звук загружен успешно");
-            if (status === Audio.Error) console.log("Ошибка:", errorString);
+
+        onPlaying: {
+            wasPlayed = true;
+            console.log("Начало воспроизведения");
+        }
+
+        onStopped: {
+            if (wasPlayed) {
+                console.log("Воспроизведение завершено успешно");
+                wasPlayed = false;
+            }
         }
     }
+
 
     Column {
         width: parent.width
@@ -32,7 +42,6 @@ Page {
             text: "Открыть диалог"
             anchors.horizontalCenter: parent.horizontalCenter
             onClicked: {
-                buttonSound.stop()
                 buttonSound.play()
                 var dialog = pageStack.push("SumDialog.qml")
                 dialog.accepted.connect(function() {
@@ -47,11 +56,6 @@ Page {
                         timestamp: new Date().toLocaleTimeString(Qt.locale(), "hh:mm:ss")
                     })
                 })
-                onStatusChanged: {
-                    if (status == SoundEffect.Error) {
-                        console.log("Ошибка загрузки звука:", source);
-                    }
-                }
             }
         }
 

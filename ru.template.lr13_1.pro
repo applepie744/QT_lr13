@@ -18,6 +18,11 @@ AURORAAPP_ICONS = 86x86 108x108 128x128 172x172
 
 CONFIG += auroraapp_i18n
 
+QT += multimedia
+
 TRANSLATIONS += \
     translations/ru.template.lr13_1.ts \
     translations/ru.template.lr13_1-ru.ts \
+
+RESOURCES += \
+    qml/sources.qrc
